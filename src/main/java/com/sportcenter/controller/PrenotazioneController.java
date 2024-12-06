@@ -45,12 +45,27 @@ public class PrenotazioneController {
         // 3. settare i valori in un oggetto Prenotazione
         // 4. salvare
 
-        return null;
-        //return prenotazioniService.create(prenotazioneRequest);
+        Prenotazione prenotazione = prenotazioniService.create(prenotazioneRequest);
+        // 5. trasformo la prenotazione in una prenotazioneResponse e ritorno
+        PrenotazioneResponse response = mapToResponse(prenotazione);
+        // 6. restituisco l'oggetto appena creato (di tipo PrenotazioneResponse)
+        return response;
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id)  {
         repository.deleteById(id);
+    }
+
+    private PrenotazioneResponse mapToResponse(Prenotazione prenotazione)  {
+        PrenotazioneResponse response = new PrenotazioneResponse();
+
+        response.setId(prenotazione.getId());
+        response.setStato(prenotazione.getStato());
+        response.setCampoSportivoId(prenotazione.getCampoSportivo().getId());
+        response.setUtenteId(prenotazione.getUtente().getId());
+        response.setDataOra(prenotazione.getDataOra());
+
+        return response;
     }
 }
